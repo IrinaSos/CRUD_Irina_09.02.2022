@@ -1,0 +1,17 @@
+Statement vs PreparedStatement
+
+SQL vaicājumu izpildei var izmantot Statement un PreparedStatement. No vienas puses, abi interfeisi izskatās ļoti līdzīgi. Bet tomēr tie būtiski atšķīrās viens no otra pēc savām īpašībām un savās veiktspējās.
+Statement - tiek izmantots, lai izpildīt SQL rindu vaicājumus.
+PreparedStatement - tiek izmantots, lai izpildīt parametrizētos SQL vaicājumus.
+
+Izskatīsim 5 atšķirības starp Java Database Connectivity (JDBC) Statement un PreparedStatement interfeisiem. 
+
+1). Statement  operators (interface)  pieņem  SQL vaicājumus rindu formā. Tas nozīmē, ka kods paliek grūti salasāms, kad mēs apvienojam SQL rindas. PreparedStatement paplašina Statement interfeisu. Tam ir speciālās metodes dažādu tipu objektu piesaistīšanai, iekļaujot failus un masīvus. Rezultātā kods paliek viegli salasāms un saprotams. 
+
+2). Statement ir neaizsargāts  pret SQL-injection - datorsistēmas uzbrukumiem, bet PreparedStatement aizsargā no SQL-injection, jo ekranizē tekstu visām norādītajām parametru vērtībām. PreparedStatement nodod parametrus caur ?, kas ļauj izvairīties no SQL-injection, līdz ar to var secināt, ka drošības ziņā ir vēlama PreparedStatement izmantošana.   
+
+3). JDBC nodod vaicājumu datu bāzē ar jau iebūvētām vērtībām. Līdz ar to nekādas vaicājumu optimizācijas nenotiek. PreparedStatement savukārt izmanto SQL operatora priekškompilāciju. Tas nozīmē, ka nākamreiz, kad būs izpildīts tas pats SQL operators, datu bāzes puse netiks sakompilētā, bet izmantos datu bāzes buferi pa taisno, kas paredz piekļuves efektivitātes uzlabošanu datiem.
+
+4). Statement ir piemērots DDL (Data Definition Language) vaicājumiem CREATE, ALTER un DROP tipa. Citiem vārdiem, ar operatoru palīdzību, kas ir iekļauti šajā grupā, mēs nosakām datu bāzes struktūru un strādājam ar šīs bāzes objektiem, t.i. veidojam, modificējam un dzēšam tos. DDL ietekmē visu datubāzi. Savukārt PreparedStatement ir piemērots DML (Data Manipulation Language) vaicājumiem - operatoru grupa (INSERT, SELECT, UPDATE, DELETE), kas ir peredzēta datu manipulācijai. Ar šo operatoru palīdzību mēs varam ievietot, ieladēt, modificēt un dzēst datus no datu bāzes. DML ietekmē tikai vienu/vairākus ierakstus datubāzē. 
+
+5). Statement nevar izmantot failu un masīvu glabāšanai un ieguvei, savukārt PreparedStatement nodrošina ļoti vienkāršu uzglabāšanas veidu un failu iegūšanu pateicoties BLOB (Binary Large Object - datu tips, kas ir paredzēts attēlu, audio, video failu, kā arī sakompilētu programmas kodu glabāšanai) un CLOB (Character Large Object -  datu tips, kas ir paredzēts lielu tekstu datu glabāšanai) datu tipiem. PreparedStatement arī palīdz glabāt sarakstus, pārveidojot java.sql.Array SQL masīvā. 
